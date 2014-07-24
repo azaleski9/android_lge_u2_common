@@ -23,4 +23,5 @@
 # Hardware tunables
 /sys/devices/omapdss/display0/gamma_tuning        u:object_r:sysfs_writable:s0
 /sys/devices/platform/tspdrv/nforce_timed         u:object_r:sysfs_writable:s0
+/sys/devices/omapdss/display0/nature         	  u:object_r:sysfs_writable:s0
 

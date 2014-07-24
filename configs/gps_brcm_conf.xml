@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--taesook.yoon@lge.com 20110725 - change devicename from vsnet0 to rmnet0   -->
-<!--taesook.yoon@lge.com 20110725 - change arp-supl-cap-ecid from true to false   -->
 <glgps xmlns="http://www.glpals.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.glpals.com/ glconfig.xsd" >
   <!--HAL Confguration: Please make sure to split the hal configuration when it's bigger than 1K bytes. -->
   <hal 
-	  acPortName="/dev/ttyO2" lBaudRate="460800"  cLogEnabled="true" acLogDirectory="/sdcard/gps/log"
-       enhanced-assisted="false" cLogEnableInitState="false"
-              
-       arp-supl-enable="true" arp-supl-cap-msb="true" arp-supl-cap-msa="true" arp-supl-cap-ecid="true"
-	   acSuplServer="supl.google.com" SuplPort="7276" tlsCertPath="/system/etc/cert/lge.cer" 
-       tlsStopForInvPath="true" arp-supl-use-apn="true" arp-supl-interface-device="rmnet0"
-       ReAidingType="3" ReAidingRetryIntervalSec="10" ReAidingIntervalSec="1800"
-       LbsEnable="true" LbsLocal="false" LbsServer="BCMLS2.glpals.com" LbsPort="7275"
-       LbsSyncLto="true" LbsSyncCells="false" ltoFileName="lto.dat"
+	  acPortName="/dev/ttyO2" lBaudRate="460800" 
+       bPrintToConsole="false" bUseHalLogger="true" cLogEnableInitState="false" cLogEnabled="true" acLogDirectory="/data/gps/log/"
+       
+       enhanced-assisted="false" cp-enhanced-assisted="true" TISEnabled="false" RILEnabled="false" 
+       acLtoDir="/data/gps/"
+
+       arp-supl-enable="true" arp-supl-cap-msb="true" arp-supl-cap-msa="true" arp-supl-cap-ecid="false"
+       acSuplServer="lge.glpals.com" SuplPort="7275" tlsCertPath="/system/etc/cert/lge.cer" 
+       arp-supl-use-apn="true"  tlsStopForInvPath="true"
+       ReAidingType="1" ReAidingRetryIntervalSec="10" ReAidingIntervalSec="1800"
+
+       LbsEnable="true" LbsLocal="true" LbsServer="bcmls.glpals.com" LbsPort="7275"
+	   LbsSyncTimeSec="60" arp-supl-ssl-method="SSLv23"
+       LbsSyncLto="true" LbsSyncCells="true" ltoFileName="lto.dat"
        LbsGetGpsAssistance="true" LbsSyncLtoThresholdDays="3"
        LbsCellEnable="true" LbsGpsEnable="true" LbsWlanEnable="false"
 	   />
   <hal 
+		 acNtpServer="pool.ntp.org"
        acNmeaOutName="/data/gpspipe"  
        ResetOnStart="false"
        gpioDelayMs="80"
@@ -25,6 +29,7 @@
        acNvStoDir="/data/gps/"
        gpioNStdbyPath="/sys/devices/platform/gps_gpio/poweron"
        gpioNResetPath="/sys/devices/platform/gps_gpio/reset"
+
        />
   <!-- Sample HAL Conf to enable TLS CA checking and GPIO setting.
        acSuplServer="www.spirent-lcs.com" SuplPort="7275" tlsCertPath="/system/etc/spirentroot.cer" 
@@ -48,13 +53,16 @@
        pps-enable="false" pps-offset-madb shell chmod 777 /system/bin/gpsd/glgps_tmp
 s="0" pps-width-ns="100" 
   -->
-
+  
+  <!-- 130123 wonkyum.kim@lge.com, Added the Setting values that 'WarmStandBy' for CTS Verifier Issue-->
   <gll 
-       LogPriMask="LOG_INFO"
-       LogFacMask="LOG_GLLAPI | LOG_NMEA | LOG_RAWDATA | LOG_DEVKF " 
+        LogPriMask="LOG_DEBUG"
+   LogFacMask="LOG_GLLAPI | LOG_DEVIA | LOG_NMEA | LOG_RAWDATA | LOG_DEVMS | LOG_ASIC_IO | LOG_BBTEST | LOG_DEVET | LOG_MESM | LOG_DEVKF | LOG_DEVJG | LOG_DEVMR | LOG_DEVCV"
        FrqPlan="FRQ_PLAN_26MHZ_2PPM_26MHZ_300PPB"   
        RfType="GL_RF_47511_BRCM_EXT_LNA"   
        psf-not-connected="true"   
+       WarmStandbyTimeout1Seconds="10"
+       WarmStandbyTimeout2Seconds="15"	   
   />
 
   <gll>  

@@ -34,6 +34,7 @@
     <!-- the 6th element indicates boot-time dependency-met value. -->
     <string-array translatable="false" name="networkAttributes">
         <item>"wifi,1,1,1,-1,true"</item>
+		<item>"wifi_p2p,13,1,0,-1,true"</item>
         <item>"mobile,0,0,0,-1,true"</item>
         <item>"mobile_mms,2,0,2,60000,true"</item>
         <item>"mobile_supl,3,0,2,60000,true"</item>
@@ -72,16 +73,6 @@
         <item>"wlan0"</item>
     </string-array>
 
-    <!-- Device type information conforming to Annex B format in WiFi Direct specification.
-         The default represents a dual-mode smartphone -->
-    <string translatable="false" name="config_wifi_p2p_device_type">10-0050F204-5</string>
-
-    <!-- List of regexpressions describing the interface (if any) that represent tetherable
-             bluetooth interfaces. If the device doesn't want to support tethering over bluetooth this
-             should be empty. -->
-    <string-array translatable="false" name="config_tether_bluetooth_regexs">
-        <item>"bt-pan"</item>
-    </string-array>
 
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
@@ -100,7 +91,11 @@
         <item>7</item>
     </integer-array>
 
-    <integer name="config_deviceHardwareKeys">7</integer>
+	<string translatable="false" name="config_wifi_p2p_device_type">10-0050F204-5</string>
+
+    <integer name="config_deviceHardwareKeys">19</integer>
+
+	<integer name="config_longPressOnHomeBehavior">4</integer>
 
     <bool name="config_ui_enableFadingMarquee">false</bool>
 
@@ -109,5 +104,24 @@
 
     <!-- LED Flashlight -->
     <bool name="config_enableTorch">true</bool>
+
+	<bool name="config_unplugTurnsOnScreen">true</bool>
+
+	 <bool name="config_animateScreenLights">false</bool>
+
+<!-- Enable overlay for all location components. -->
+    <bool name="config_enableNetworkLocationOverlay" translatable="false">true</bool>
+    <bool name="config_enableFusedLocationOverlay" translatable="false">true</bool>
+    <bool name="config_enableGeocoderOverlay" translatable="false">true</bool>
+    <bool name="config_enableGeofenceOverlay" translatable="false">true</bool>
+
+<string-array name="config_locationProviderPackageNames" translatable="false">
+        <!-- The standard AOSP fused location provider -->
+        <item>com.android.location.fused</item>
+        <!-- The Google Network Location Services location provider -->
+        <item>com.google.android.gms</item>
+    </string-array>
+
+ <bool name="config_enableWifiDisplay">true</bool>
 
 </resources>

@@ -25,6 +25,10 @@ public class DisplayColorCalibration {
         return true;
     }
 
+ 	public static int getDefValue()  {
+        return 255;
+    }
+
     public static int getMaxValue()  {
         return 255;
     }

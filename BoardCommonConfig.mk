@@ -23,7 +23,7 @@ NEEDS_ARM_ERRATA_754319_754320 := true
 BOARD_GLOBAL_CFLAGS += -DNEEDS_ARM_ERRATA_754319_754320
 
 # Kernel
-BOARD_KERNEL_CMDLINE :=
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 
@@ -32,7 +32,7 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_RECOVERY_FSTAB = device/lge/u2-common/fstab.u2
 RECOVERY_FSTAB_VERSION = 2
 BOARD_UMS_LUNFILE := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
-TARGET_OTA_ASSERT_DEVICE := p760,p765,p768,u2
+TARGET_OTA_ASSERT_DEVICE := p760,p765,p768,p769,u2
 
 # EGL
 BOARD_EGL_CFG := device/lge/u2-common/egl.cfg
@@ -48,10 +48,9 @@ BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_bcmdhd
 BOARD_WLAN_DEVICE := bcmdhd
 WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/bcmdhd/parameters/firmware_path"
-WIFI_DRIVER_FW_PATH_STA := "/system/etc/firmware/fw_bcmdhd.bin"
-WIFI_DRIVER_FW_PATH_P2P := "/system/etc/firmware/fw_bcmdhd_p2p.bin"
-WIFI_DRIVER_FW_PATH_AP := "/system/etc/firmware/fw_bcmdhd_apsta.bin"
-BOARD_LEGACY_NL80211_STA_EVENTS := true
+WIFI_DRIVER_FW_PATH_STA := "/vendor/firmware/fw_bcmdhd.bin"
+WIFI_DRIVER_FW_PATH_AP := "/vendor/firmware/fw_bcmdhd_apsta.bin"
+BOARD_WLAN_DEVICE_REV := bcm4330_b1
 WIFI_BAND := 802_11_ABGN
 
 # Bluetooth
@@ -61,6 +60,7 @@ BOARD_BLUEDROID_VENDOR_CONF := device/lge/u2-common/configs/vnd_u2.txt
 
 # Setup custom omap4xxx defines
 BOARD_USE_CUSTOM_LIBION := true
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.u2
 
 # OMX
 HARDWARE_OMX := true
@@ -85,6 +85,7 @@ BOARD_USE_SYSFS_VSYNC_NOTIFICATION := true
 
 # FS
 TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1033686220
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2469606195
 BOARD_FLASH_BLOCK_SIZE := 131072
@@ -93,7 +94,6 @@ BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/lge/u2-common/vibrator.c
 
 # Camera
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 USE_CAMERA_STUB := false
 
 # External SGX Module
@@ -110,8 +110,9 @@ TARGET_KERNEL_MODULES += SGX_MODULES
 BOARD_RIL_CLASS := ../../../device/lge/u2-common/ril/
 
 # Charger
-BOARD_CUSTOM_GRAPHICS := ../../../device/lge/u2-common/recovery-gfx.c
 BOARD_CHARGER_ENABLE_SUSPEND := true
+
+TARGET_PROVIDES_TI_FM_SERVICE := true
 
 # SELinux
 BOARD_SEPOLICY_DIRS := \

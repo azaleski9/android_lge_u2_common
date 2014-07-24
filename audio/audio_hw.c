@@ -197,10 +197,10 @@
 #define VOICE_CALL_HEADSET_MIC_VOLUME         15
 
 /* use-case specific output volumes */
-#define NORMAL_SPEAKER_VOLUME                 6
+#define NORMAL_SPEAKER_VOLUME                 4
 #define VOICE_CALL_SPEAKER_VOLUME             5
 
-#define HEADSET_VOLUME                        -12
+#define HEADSET_VOLUME                        3
 #define HEADPHONE_VOLUME                      -12
 
 #define BLUETOOTH_MIC_VOLUME                  -18
@@ -1209,7 +1209,7 @@ static int start_output_stream(struct omap_stream_out *out)
 {
     struct omap_audio_device *adev = out->dev;
     unsigned int card = CARD_OMAP_DEFAULT;
-    unsigned int port = PORT_MM_LP;
+    unsigned int port = PORT_MM;
 
     LOGFUNC("%s(%p)", __FUNCTION__, adev);
 

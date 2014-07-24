@@ -48,9 +48,13 @@
 /dev/rpmsg-omx1           0660   drmrpc    drmrpc
 /dev/rproc_user           0660   drmrpc    drmrpc
 /dev/tf_driver            0660   radio     drmrpc
+/dev/tf_ctrl              0660   radio     drmrpcd
 
 # Immersion (Vibrator)
 /dev/tspdrv               0666   root       root
+
+#for FM v4l2 Radio
+/dev/radio0               0600   fmradio   fmradio
 
 # RIL Platform (for IPC Interface)
 /dev/xmd-tty*            0660   radio      radio
