@@ -91,8 +91,7 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
 	audio.r_submix.default \
     camera.u2 \
-    hwcomposer.u2 \
-	power.u2
+    hwcomposer.u2
 
 # OMAP4 OMX
 PRODUCT_PACKAGES += \
@@ -187,15 +186,16 @@ Mira4U
 #$(LOCAL_PATH)/fs/system/bin/nettest:system/bin/nettest \
 
 PRODUCT_COPY_FILES += \
-$(LOCAL_PATH)/fs/system/media/bootanimation.zip:system/media/bootanimation.zip \
-$(LOCAL_PATH)/fs/system/etc/init.d/55frandom:system/etc/init.d/55frandom \
 $(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim \
 $(LOCAL_PATH)/fs/system/app/GPSFixer.apk:system/app/GPSFixer.apk \
 $(LOCAL_PATH)/fs/system/app/L9UMSSwitcher.apk:system/app/L9UMSSwitcher.apk \
-$(LOCAL_PATH)/fs/system/app/L9Tweaker.apk:system/app/L9Tweaker.apk \
 $(LOCAL_PATH)/fs/system/app/OTAUpdater.apk:system/app/OTAUpdater.apk \
 $(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM.apk \
-$(LOCAL_PATH)/fs/system/framework/com.android.location.provider.jar:system/framework/com.android.location.provider.jar
+$(LOCAL_PATH)/fs/system/framework/com.android.location.provider.jar:system/framework/com.android.location.provider.jar \
+$(LOCAL_PATH)/fs/system/etc/permissions/com.otaudater.feature.xml:system/etc/permissions/com.otaudater.feature.xml \
+$(LOCAL_PATH)/fs/system/ota.prop:system/ota.prop \
+$(LOCAL_PATH)/fs/system/rom.ota.prop:system/rom.ota.prop
+
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
@@ -237,11 +237,7 @@ ro.build.target_country=EU \
 ro.build.target_operator=OPEN \
 ro.bt.bdaddr_path=/sys/devices/platform/bd_address/bdaddr_if \
 persist.sys.usb.config=mtp,adb \
-persist.debug.wfd.enable=1 \
-windowsmgr.max_events_per_sec=50 \
-otaupdater.otaid=l9cm11artas182x \
-otaupdater.otaver=1 \
-otaupdater.otatime=20140710-2149
+persist.debug.wfd.enable=1
 
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
