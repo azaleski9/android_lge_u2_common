@@ -197,10 +197,10 @@
 #define VOICE_CALL_HEADSET_MIC_VOLUME         15
 
 /* use-case specific output volumes */
-#define NORMAL_SPEAKER_VOLUME                 4
-#define VOICE_CALL_SPEAKER_VOLUME             5
+#define NORMAL_SPEAKER_VOLUME                 5
+#define VOICE_CALL_SPEAKER_VOLUME             6
 
-#define HEADSET_VOLUME                        1
+#define HEADSET_VOLUME                        0
 #define HEADPHONE_VOLUME                      -12
 
 

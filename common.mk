@@ -176,24 +176,17 @@ PRODUCT_PACKAGES += \
     fsck.f2fs \
     fibmap.f2fs
 
-# artas182x (Artur Załęski) part
-PRODUCT_PACKAGES += \
-WFD \
-Mira4U
-#$(LOCAL_PATH)/fs/system/bin/wfd:system/bin/wfd \
-#$(LOCAL_PATH)/fs/system/bin/udptest:system/bin/udptest \
-#$(LOCAL_PATH)/fs/system/bin/rtptest:system/bin/rtptest \
-#$(LOCAL_PATH)/fs/system/bin/nettest:system/bin/nettest \
-
 PRODUCT_COPY_FILES += \
 $(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim \
 $(LOCAL_PATH)/fs/system/app/GPSFixer.apk:system/app/GPSFixer.apk \
+$(LOCAL_PATH)/fs/system/app/Viper4Android.apk:system/app/Viper4Android.apk \
 $(LOCAL_PATH)/fs/system/app/L9UMSSwitcher.apk:system/app/L9UMSSwitcher.apk \
 $(LOCAL_PATH)/fs/system/app/OTAUpdater.apk:system/app/OTAUpdater.apk \
 $(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM.apk \
 $(LOCAL_PATH)/fs/system/framework/com.android.location.provider.jar:system/framework/com.android.location.provider.jar \
 $(LOCAL_PATH)/fs/system/etc/permissions/com.otaudater.feature.xml:system/etc/permissions/com.otaudater.feature.xml \
 $(LOCAL_PATH)/fs/system/ota.prop:system/ota.prop \
+$(LOCAL_PATH)/fs/system/etc/init.d/oldl9tweaker:system/etc/init.d/oldl9tweaker \
 $(LOCAL_PATH)/fs/system/rom.ota.prop:system/rom.ota.prop
 
 

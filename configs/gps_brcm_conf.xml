@@ -11,7 +11,7 @@
        arp-supl-enable="true" arp-supl-cap-msb="true" arp-supl-cap-msa="true" arp-supl-cap-ecid="false"
        acSuplServer="lge.glpals.com" SuplPort="7275" tlsCertPath="/system/etc/cert/lge.cer" 
        arp-supl-use-apn="true"  tlsStopForInvPath="true"
-       ReAidingType="1" ReAidingRetryIntervalSec="10" ReAidingIntervalSec="1800"
+       ReAidingType="3" ReAidingRetryIntervalSec="10" ReAidingIntervalSec="1800"
 
        LbsEnable="true" LbsLocal="true" LbsServer="bcmls.glpals.com" LbsPort="7275"
 	   LbsSyncTimeSec="60" arp-supl-ssl-method="SSLv23"
