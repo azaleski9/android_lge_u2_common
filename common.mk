@@ -186,7 +186,6 @@ $(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM.apk \
 $(LOCAL_PATH)/fs/system/framework/com.android.location.provider.jar:system/framework/com.android.location.provider.jar \
 $(LOCAL_PATH)/fs/system/etc/permissions/com.otaudater.feature.xml:system/etc/permissions/com.otaudater.feature.xml \
 $(LOCAL_PATH)/fs/system/ota.prop:system/ota.prop \
-$(LOCAL_PATH)/fs/system/etc/init.d/oldl9tweaker:system/etc/init.d/oldl9tweaker \
 $(LOCAL_PATH)/fs/system/rom.ota.prop:system/rom.ota.prop
 
 
