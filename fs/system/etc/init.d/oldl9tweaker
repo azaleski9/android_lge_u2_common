@@ -1,0 +1,1 @@
+cd /data/app && find . -name "*l9tweaker*" -type f | xargs rm -f
