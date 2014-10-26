@@ -71,7 +71,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps_brcm_conf.xml:system/etc/gps_brcm_conf.xml \
 	 $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf \
-	$(LOCAL_PATH)/configs/SuplRootCert:system/etc/SuplRootCert
+	$(LOCAL_PATH)/configs/SuplRootCert:system/etc/SuplRootCert \
+    $(LOCAL_PATH)/configs/lge.cer:system/etc/cert/lge.cer
 
 $(call inherit-product, build/target/product/full.mk)
 
@@ -186,7 +187,10 @@ $(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM.apk \
 $(LOCAL_PATH)/fs/system/framework/com.android.location.provider.jar:system/framework/com.android.location.provider.jar \
 $(LOCAL_PATH)/fs/system/etc/permissions/com.otaudater.feature.xml:system/etc/permissions/com.otaudater.feature.xml \
 $(LOCAL_PATH)/fs/system/ota.prop:system/ota.prop \
-$(LOCAL_PATH)/fs/system/rom.ota.prop:system/rom.ota.prop
+$(LOCAL_PATH)/fs/system/rom.ota.prop:system/rom.ota.prop \
+$(LOCAL_PATH)/fs/system/lib/libv4a_fx_ics.so:system/lib/libv4a_fx_ics.so \
+$(LOCAL_PATH)/fs/system/etc/audio_effects.conf:system/etc/audio_effects.conf \
+$(LOCAL_PATH)/fs/system/etc/init.d/99lmk:system/etc/init.d/99lmk
 
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
@@ -229,7 +233,8 @@ ro.build.target_country=EU \
 ro.build.target_operator=OPEN \
 ro.bt.bdaddr_path=/sys/devices/platform/bd_address/bdaddr_if \
 persist.sys.usb.config=mtp,adb \
-persist.debug.wfd.enable=1
+persist.debug.wfd.enable=1 \
+ro.ksm.default=1
 
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0

@@ -9,7 +9,7 @@
        acLtoDir="/data/gps/"
 
        arp-supl-enable="true" arp-supl-cap-msb="true" arp-supl-cap-msa="true" arp-supl-cap-ecid="false"
-       acSuplServer="lge.glpals.com" SuplPort="7275" tlsCertPath="/system/etc/cert/lge.cer" 
+       acSuplServer="supl.google.com" SuplPort="7276"
        arp-supl-use-apn="true"  tlsStopForInvPath="true"
        ReAidingType="3" ReAidingRetryIntervalSec="10" ReAidingIntervalSec="1800"
 

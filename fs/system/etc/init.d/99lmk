@@ -1,0 +1,19 @@
+#!/system/bin/sh
+
+minfree=2560,5120,25600,30720,24320,49920;
+lmk=/sys/module/lowmemorykiller/parameters/minfree;
+minboot=`cat $lmk`;
+while sleep 1; do
+  if [ `cat $lmk` != $minboot ]; then
+    [ `cat $lmk` != $minfree ] && echo $minfree > $lmk || exit;
+  fi;
+done&
+
+# general queue tweaks
+for i in /sys/block/*/queue; do
+  echo 512 > $i/nr_requests;
+  echo 2 > $i/rq_affinity;
+  echo 0 > $i/nomerges;
+  echo 0 > $i/add_random;
+  echo 0 > $i/rotational;
+done;
