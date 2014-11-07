@@ -93,8 +93,6 @@
 
 	<string translatable="false" name="config_wifi_p2p_device_type">10-0050F204-5</string>
 
-    <integer name="config_deviceHardwareKeys">19</integer>
-
 	<integer name="config_longPressOnHomeBehavior">4</integer>
 
     <bool name="config_ui_enableFadingMarquee">false</bool>
@@ -102,8 +100,6 @@
     <!-- Disable lockscreen translucent decor by default -->
     <bool name="config_enableLockScreenTranslucentDecor">true</bool>
 
-    <!-- LED Flashlight -->
-    <bool name="config_enableTorch">true</bool>
 
 	<bool name="config_unplugTurnsOnScreen">true</bool>
 

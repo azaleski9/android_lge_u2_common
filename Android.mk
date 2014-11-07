@@ -1,7 +1,5 @@
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter p760 p768 p765 p769,$(TARGET_DEVICE)),)
-
 
 #Creating Gralloc SymLink
 include $(CLEAR_VARS)
@@ -24,6 +22,11 @@ $(LOCAL_BUILT_MODULE):
 	$(hide) ln -sf $(GRALLOC_FILE) $(SYMLINK)
 	$(hide) touch $@
 
-include $(call all-makefiles-under,$(LOCAL_PATH))
+# Google goofed Invensense with Lollipop and made this part dependent on TARGET_DEVICE is tuna.
+# TARGET_DEVICE gets set to the specific variant though, e.g. maguro or toro.
+# Rather than fork hardware/invensense, just work around it here.
+#include $(CLEAR_VARS)
+#include $(LOCAL_PATH)/../../../hardware/invensense/60xx/Android.mk
 
-endif
+#include $(CLEAR_VARS)
+include $(call all-makefiles-under,$(LOCAL_PATH))

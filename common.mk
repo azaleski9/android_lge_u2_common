@@ -37,7 +37,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf
+    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
 # wifi nvram calibration
 PRODUCT_COPY_FILES += \
@@ -54,8 +57,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    $(LOCAL_PATH)/fs/system/etc/permissions/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-    $(LOCAL_PATH)/fs/system/etc/permissions/com.android.location.provider.xml:system/etc/permissions/com.android.location.provider.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
@@ -177,19 +178,19 @@ PRODUCT_PACKAGES += \
     fsck.f2fs \
     fibmap.f2fs
 
+# libcorkscrew is needed for some of the PVR stuff.
+PRODUCT_PACKAGES += \
+	libcorkscrew
+
+PRODUCT_PACKAGES += \
+    wpa_supplicant \
+	hostapd
+
 PRODUCT_COPY_FILES += \
 $(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim \
-$(LOCAL_PATH)/fs/system/app/GPSFixer.apk:system/app/GPSFixer.apk \
-$(LOCAL_PATH)/fs/system/app/Viper4Android.apk:system/app/Viper4Android.apk \
-$(LOCAL_PATH)/fs/system/app/L9UMSSwitcher.apk:system/app/L9UMSSwitcher.apk \
-$(LOCAL_PATH)/fs/system/app/OTAUpdater.apk:system/app/OTAUpdater.apk \
-$(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM.apk \
-$(LOCAL_PATH)/fs/system/framework/com.android.location.provider.jar:system/framework/com.android.location.provider.jar \
-$(LOCAL_PATH)/fs/system/etc/permissions/com.otaudater.feature.xml:system/etc/permissions/com.otaudater.feature.xml \
-$(LOCAL_PATH)/fs/system/ota.prop:system/ota.prop \
-$(LOCAL_PATH)/fs/system/rom.ota.prop:system/rom.ota.prop \
-$(LOCAL_PATH)/fs/system/lib/libv4a_fx_ics.so:system/lib/libv4a_fx_ics.so \
-$(LOCAL_PATH)/fs/system/etc/audio_effects.conf:system/etc/audio_effects.conf \
+$(LOCAL_PATH)/fs/system/app/GPSFixer.apk:system/app/GPSFixer/GPSFixer.apk \
+$(LOCAL_PATH)/fs/system/app/L9UMSSwitcher.apk:system/app/L9UMSSwitcher/L9UMSSwitcher.apk \
+$(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM/L9BM.apk \
 $(LOCAL_PATH)/fs/system/etc/init.d/99lmk:system/etc/init.d/99lmk
 
 
@@ -216,8 +217,6 @@ ro.telephony.ril_class=U2RIL \
 wifi.interface=wlan0 \
 ro.bq.gpu_to_cpu_unsupported=1 \
 ro.hwui.disable_scissor_opt=true \
-dalvik.vm.dexopt-flags=m=y,u=n \
-persist.dalvik.vm.dexopt-data-only=0 \
 ro.sf.lcd_density=240 \
 ro.opengles.version=131072 \
 dalvik.vm.dexopt-data-only=1 \

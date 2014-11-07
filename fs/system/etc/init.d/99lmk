@@ -1,6 +1,7 @@
 #!/system/bin/sh
 
-minfree=2560,5120,25600,30720,24320,49920;
+# lmk tweaks for fewer empty background processes
+minfree=6144,8192,12288,16384,24576,40960;
 lmk=/sys/module/lowmemorykiller/parameters/minfree;
 minboot=`cat $lmk`;
 while sleep 1; do

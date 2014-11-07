@@ -1,5 +1,0 @@
-{
-    "noflash": "false",
-	"system_sdpath": "/storage/sdcard0",
-    "recovery_sdpath": "/external_sd"
-}
