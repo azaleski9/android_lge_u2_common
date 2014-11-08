@@ -184,7 +184,9 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     wpa_supplicant \
-	hostapd
+	hostapd \
+    libwpa_client \
+    dhcpcd.conf
 
 PRODUCT_COPY_FILES += \
 $(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim \
