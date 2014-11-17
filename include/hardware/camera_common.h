@@ -114,6 +114,8 @@ __BEGIN_DECLS
 #define CAMERA_DEVICE_API_VERSION_3_1 HARDWARE_DEVICE_API_VERSION(3, 1)
 #define CAMERA_DEVICE_API_VERSION_3_2 HARDWARE_DEVICE_API_VERSION(3, 2)
 
+// Device version 3.2 is current, older HAL camera device versions are not
+// recommended for new devices.
 #define CAMERA_DEVICE_API_VERSION_CURRENT CAMERA_DEVICE_API_VERSION_3_2
 
 /**

@@ -45,7 +45,7 @@ on fs
     write /proc/sys/vm/page-cluster 0
 	
 
-
+	insmod /system/lib/modules/pvrsrvkm_sgx540_120.ko
     ## This needs to run ASAP to set up the framebuffer before zygote kicks in
     start pvrsrvinit
 
@@ -56,6 +56,8 @@ on post-fs-data
 
     chown system system /persist
     chmod 0771 /persist
+
+    symlink /sys/egl/egl.cfg /system/lib/egl/egl.cfg
 
     mkdir /data/misc/wifi 0775 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
@@ -322,16 +324,15 @@ on boot
 	
     write /sys/devices/system/cpu/sched_mc_power_savings 2
 	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 200000
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1008000
 	write /sys/devices/platform/omap/pvrsrvkm.0/sgxfreq/frequency_limit 307200000
-	write /sys/devices/system/cpu/cpu0/cpufreq/screen_off_max_freq 600000
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor intelliactive
+	write /sys/devices/system/cpu/cpu0/cpufreq/screen_off_max_freq 800000
 	write /sys/kernel/dyn_fsync/Dyn_fsync_active 1
 	write /sys/class/misc/fsynccontrol/fsync_enabled 1
-    write /sys/class/misc/customvoltage/mpu_voltages "1365 1355 1345 1280 1155 980 940"
-    write /sys/class/misc/customvoltage/core_voltages "1230 1110 940"
-    write /sys/class/misc/customvoltage/iva_voltages "1281 1104 940"
-    
+
+    write /sys/class/misc/customvoltage/mpu_voltages "1320 1310 1300 1205 1110 935 915"
+    write /sys/class/misc/customvoltage/core_voltages "1210 1990 920"
+    write /sys/class/misc/customvoltage/iva_voltages "1210 986 920"
+    write /sys/kernel/mm/ksm/run 1
 
 	 write /proc/sys/vm/highmem_is_dirtyable 1
     write /proc/sys/vm/lowmem_reserve_ratio 16\ 16
@@ -469,10 +470,9 @@ chmod 755 /mnt/asec
 chmod 777 /data/gps
 chmod -R 777 /data/gps
 
-service charger /charger
+service charger /sbin/healthd
     class charger
+    seclabel u:r:healthd:s0
     user root
     group root
     oneshot
-  
-    write /sys/module/lowmemorykiller/parameters/minfree 2560,5120,25600,30720,24320,49920

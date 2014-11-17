@@ -44,6 +44,11 @@ public class U2RIL extends RIL implements CommandsInterface {
     private int mCallPath = -1;
     ArrayList<Integer> mCallList = new ArrayList<Integer>();
 
+    public U2RIL(Context context, int networkMode,
+            int cdmaSubscription, Integer instanceId) {
+        this(context, networkMode, cdmaSubscription);
+    }
+
     public U2RIL(Context context, int networkMode, int cdmaSubscription) {
         super(context, networkMode, cdmaSubscription);
         PhoneStateListener mPhoneStateListener = new PhoneStateListener() {

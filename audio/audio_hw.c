@@ -1658,7 +1658,7 @@ exit:
     pthread_mutex_unlock(&out->lock);
 
     if (ret != 0) {
-        usleep(bytes * 1000000 / audio_stream_frame_size(&stream->common) /
+        usleep(bytes * 1000000 / audio_stream_out_frame_size(stream) /
                out_get_sample_rate(&stream->common));
     }
 
@@ -1954,8 +1954,8 @@ static void get_capture_delay(struct omap_stream_in *in,
     /* read frames available in audio HAL input buffer
      * add number of frames being read as we want the capture time of first sample
      * in current buffer */
-    buf_delay = (long)(((int64_t)(in->frames_in + in->proc_frames_in) * 1000000000)
-                                    / in->config.rate);
+    buf_delay = (long)(((int64_t)(in->frames_in) * 1000000000) / in->config.rate +
+                       ((int64_t)(in->proc_frames_in) * 1000000000) / in->requested_rate);
     /* add delay introduced by resampler */
     rsmp_delay = 0;
     if (in->resampler) {
@@ -2043,8 +2043,9 @@ static int set_preprocessor_echo_delay(effect_handle_t handle,
 
     param->psize = sizeof(uint32_t);
     param->vsize = sizeof(uint32_t);
-    *(uint32_t *)param->data = AEC_PARAM_ECHO_DELAY;
-    *((int32_t *)param->data + 1) = delay_us;
+    uint32_t ed = AEC_PARAM_ECHO_DELAY;
+    memcpy(&param->data, &ed, sizeof(uint32_t));
+    memcpy((void*)(&param->data) + sizeof(int32_t), &delay_us, sizeof(int32_t));
 
     return set_preprocessor_param(handle, param);
 }
@@ -2317,7 +2318,7 @@ static ssize_t in_read(struct audio_stream_in *stream, void* buffer,
 
 exit:
     if (ret < 0)
-        usleep(bytes * 1000000 / audio_stream_frame_size(&stream->common) /
+        usleep(bytes * 1000000 / audio_stream_in_frame_size(stream) /
                in_get_sample_rate(&stream->common));
 
     pthread_mutex_unlock(&in->lock);
@@ -2421,7 +2422,8 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
                                    audio_devices_t devices,
                                    audio_output_flags_t flags,
                                    struct audio_config *config,
-                                   struct audio_stream_out **stream_out)
+                                   struct audio_stream_out **stream_out,
+                                   const char *address __unused)
 {
     struct omap_audio_device *ladev = (struct omap_audio_device *)dev;
     struct omap_stream_out *out;
@@ -2697,7 +2699,11 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
                                   audio_io_handle_t handle,
                                   audio_devices_t devices,
                                   struct audio_config *config,
-                                  struct audio_stream_in **stream_in)
+                                  struct audio_stream_in **stream_in,
+                                  audio_input_flags_t flags __unused,
+                                  const char *address __unused,
+                                  audio_source_t source __unused)
+                        
 {
     struct omap_audio_device *ladev = (struct omap_audio_device *)dev;
     struct omap_stream_in *in;
@@ -2766,6 +2772,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
     return 0;
 
 err:
+    free(in->buffer);
     if (in->resampler)
         release_resampler(in->resampler);
 
@@ -2782,9 +2789,9 @@ static void adev_close_input_stream(struct audio_hw_device *dev,
     LOGFUNC("%s(%p, %p)", __FUNCTION__, dev, stream);
 
     in_standby(&stream->common);
-
+    free(in->buffer);
     if (in->resampler) {
-        free(in->buffer);
+  
         release_resampler(in->resampler);
     }
 
@@ -2853,7 +2860,7 @@ static int adev_open(const hw_module_t* module, const char* name,
         return -ENOMEM;
 
     adev->hw_device.common.tag = HARDWARE_DEVICE_TAG;
-    adev->hw_device.common.version = AUDIO_DEVICE_API_VERSION_CURRENT;
+    adev->hw_device.common.version = AUDIO_DEVICE_API_VERSION_2_0;
     adev->hw_device.common.module = (struct hw_module_t *) module;
     adev->hw_device.common.close = adev_close;
 

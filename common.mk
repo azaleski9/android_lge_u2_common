@@ -61,6 +61,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \ 
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
@@ -93,7 +94,8 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
 	audio.r_submix.default \
     camera.u2 \
-    hwcomposer.u2
+    hwcomposer.u2 \
+    power.u2
 
 # OMAP4 OMX
 PRODUCT_PACKAGES += \
@@ -188,12 +190,11 @@ PRODUCT_PACKAGES += \
     libwpa_client \
     dhcpcd.conf
 
+PRODUCT_PACKAGES += \
+	libion.so
+
 PRODUCT_COPY_FILES += \
-$(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim \
-$(LOCAL_PATH)/fs/system/app/GPSFixer.apk:system/app/GPSFixer/GPSFixer.apk \
-$(LOCAL_PATH)/fs/system/app/L9UMSSwitcher.apk:system/app/L9UMSSwitcher/L9UMSSwitcher.apk \
-$(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM/L9BM.apk \
-$(LOCAL_PATH)/fs/system/etc/init.d/99lmk:system/etc/init.d/99lmk
+$(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim
 
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
@@ -221,7 +222,6 @@ ro.bq.gpu_to_cpu_unsupported=1 \
 ro.hwui.disable_scissor_opt=true \
 ro.sf.lcd_density=240 \
 ro.opengles.version=131072 \
-dalvik.vm.dexopt-data-only=1 \
 ro.com.google.clientidbase=android-lge \
 ro.com.google.clientidbase.ms=android-lge \
 ro.com.google.clientidbase.gmm=android-lge \
@@ -235,7 +235,8 @@ ro.build.target_operator=OPEN \
 ro.bt.bdaddr_path=/sys/devices/platform/bd_address/bdaddr_if \
 persist.sys.usb.config=mtp,adb \
 persist.debug.wfd.enable=1 \
-ro.ksm.default=1
+ro.ksm.default=1 \
+force_hw_ui=true
 
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0

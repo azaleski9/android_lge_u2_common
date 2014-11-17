@@ -1,4 +1,5 @@
 COMMON_FOLDER := device/lge/u2-common
+WITH_DEXPREOPT := true
 
 PRODUCT_VENDOR_KERNEL_HEADERS := $(COMMON_FOLDER)/kernel-headers
 TARGET_SPECIFIC_HEADER_PATH := $(COMMON_FOLDER)/include
@@ -23,7 +24,7 @@ NEEDS_ARM_ERRATA_754319_754320 := true
 BOARD_GLOBAL_CFLAGS += -DNEEDS_ARM_ERRATA_754319_754320
 
 # Kernel
-BOARD_KERNEL_CMDLINE :=
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive selinux=0
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_CONFIG := cyanogenmod_p760_defconfig
@@ -33,14 +34,20 @@ TARGET_KERNEL_SOURCE := kernel/lge/omap4-common
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_RECOVERY_FSTAB = device/lge/u2-common/fstab.u2
+MALLOC_IMPL := dlmalloc
 RECOVERY_FSTAB_VERSION = 2
 BOARD_UMS_LUNFILE := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
 TARGET_OTA_ASSERT_DEVICE := p760,p765,p768,p769,u2
 
+# libwvm needs this, among other things
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+
 # EGL
-BOARD_EGL_CFG := device/lge/u2-common/egl.cfg
+# BOARD_EGL_CFG := device/lge/u2-common/egl.cfg
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
-TARGET_USES_OPENGLES_FOR_SCREEN_CAPTURE := true
+TARGET_HAS_WAITFORVSYNC := true
+# Force the screenshot path to CPU consumer
+COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
 USE_OPENGL_RENDERER := true
 BOARD_USE_TI_DUCATI_H264_PROFILE := true
 TARGET_NEEDS_BIONIC_MD5 := true
@@ -121,14 +128,16 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 TARGET_PROVIDES_TI_FM_SERVICE := true
 
 # SELinux
-BOARD_SEPOLICY_DIRS := \
+BOARD_SEPOLICY_DIRS +:= \
     device/lge/u2-common/selinux
 
-BOARD_SEPOLICY_UNION := \
+BOARD_SEPOLICY_UNION +:= \
     file_contexts \
     pvrsrvinit.te \
     device.te \
     domain.te
+
+FORCE_PERMISSIVE_TO_UNCONFINED:=false
 
 # CMHW
 BOARD_HARDWARE_CLASS := device/lge/u2-common/cmhw/

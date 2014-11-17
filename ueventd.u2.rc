@@ -3,7 +3,8 @@
 
 # LGE_SPECIFIC
 /dev/apds_9900            0666   system     system
-
+/dev/dmm		0777	system	system
+/dev/ion		0777	system	system
 /dev/pvrsrvkm             0666   system     system
 /dev/video0               0660   system     camera
 /dev/video1               0660   system     camera
