@@ -93,7 +93,7 @@
 
 	<string translatable="false" name="config_wifi_p2p_device_type">10-0050F204-5</string>
 
-	<integer name="config_longPressOnHomeBehavior">4</integer>
+	<integer name="config_longPressOnHomeBehavior">2</integer>
 
     <bool name="config_ui_enableFadingMarquee">false</bool>
 

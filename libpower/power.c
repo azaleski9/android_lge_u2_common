@@ -33,7 +33,7 @@
 #define BOOST_PATH "/sys/devices/system/cpu/cpufreq/interactive/boost"
 #define CPU_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq"
 #define BATTERY_FRIEND_PATH "/sys/kernel/battery_briend/battery_friend_active"
-#define GPU_PATH "/sys/kernel/battery_briend/battery_friend_active"
+#define GPU_PATH "/sys/devices/platform/omap/pvrsrvkm.0/sgxfreq/frequency_limit"
 //BOOST_PULSE_DURATION and BOOT_PULSE_DURATION_STR should always be in sync
 #define BOOST_PULSE_DURATION 1000000
 #define BOOST_PULSE_DURATION_STR "1000000"
@@ -42,6 +42,10 @@
 #define NSEC_PER_USEC 100
 #define LOW_POWER_MAX_FREQ "800000"
 #define NORMAL_MAX_FREQ "1008000"
+#define SGX_NORMAL "307200000"
+#define SGX_POWERSAVE "153600000"
+#define FRIEND_ON "1"
+#define FRIEND_OFF "0"
 
 #define TIMER_RATE_SCREEN_ON "20000"
 #define TIMER_RATE_SCREEN_OFF "500000"
@@ -50,7 +54,7 @@
 
 /* initialize freqs*/
 static char screen_off_max_freq[MAX_BUF_SZ] = "600000";
-static char scaling_max_freq[] = "1008000";
+static char scaling_max_freq[MAX_BUF_SZ] = "1008000";
 
 struct u2_power_module {
     struct power_module base;
@@ -63,8 +67,6 @@ static unsigned int vsync_count;
 static struct timespec last_touch_boost;
 static bool touch_boost;
 static bool low_power_mode = false;
-char buf2[80];
-static int last_gpu = sysfs_read(GPU_PATH, buf2, sizeof(buf2));
 
 static void sysfs_write(char *path, char *s)
 {
@@ -164,10 +166,9 @@ static void u2_power_set_interactive(struct power_module *module, int on)
         if (len != -1)
             memcpy(scaling_max_freq, buf, sizeof(buf));
     }
-    sysfs_write(CPU_MAX_FREQ_PATH,
-                (!on || low_power_mode) ? LOW_POWER_MAX_FREQ : NORMAL_MAX_FREQ);
-    sysfs_write(BATTERY_FRIEND_PATH,
-                (!on || low_power_mode) ? "1" : "0");
+
+    sysfs_write(SCALINGMAXFREQ_PATH,
+                on ? scaling_max_freq : screen_off_max_freq);
     sysfs_write("/sys/devices/system/cpu/cpufreq/interactive/timer_rate",
                 on ? TIMER_RATE_SCREEN_ON : TIMER_RATE_SCREEN_OFF);
 }
@@ -206,52 +207,36 @@ static void u2_power_hint(struct power_module *module, power_hint_t hint,
 
     switch (hint) {
     case POWER_HINT_INTERACTION:
-    if (boostpulse_open(u2) >= 0) {
-            pthread_mutex_lock(&u2->lock);
-            len = write(u2->boostpulse_fd, "1", 1);
+    case POWER_HINT_CPU_BOOST:
+        if (data != NULL)
+            duration = (int) data;
+
+        if (boostpulse_open(u2) >= 0) {
+            snprintf(buf, sizeof(buf), "%d", duration);
+            len = write(u2->boostpulse_fd, buf, strlen(buf));
 
             if (len < 0) {
                 strerror_r(errno, buf, sizeof(buf));
                 ALOGE("Error writing to %s: %s\n", BOOSTPULSE_PATH, buf);
-            } else {
-                clock_gettime(CLOCK_MONOTONIC, &last_touch_boost);
-                touch_boost = true;
             }
-            pthread_mutex_unlock(&u2->lock);
         }
-
         break;
+
     case POWER_HINT_VSYNC:
-        pthread_mutex_lock(&u2->lock);
-        if (data) {
-            if (vsync_count < UINT_MAX)
-                vsync_count++;
-        } else {
-            if (vsync_count)
-                vsync_count--;
-            if (vsync_count == 0 && touch_boost) {
-                touch_boost = false;
-                clock_gettime(CLOCK_MONOTONIC, &now);
-                diff = timespec_diff(now, last_touch_boost);
-                if (check_boostpulse_on(diff)) {
-                    sysfs_write(BOOST_PATH, "0");
-                }
-            }
-        }
-        pthread_mutex_unlock(&u2->lock);
         break;
 
     case POWER_HINT_LOW_POWER:
         pthread_mutex_lock(&u2->lock);
         if (data) {
             sysfs_write(CPU_MAX_FREQ_PATH, LOW_POWER_MAX_FREQ);
-            last_gpu = sysfs_read(GPU_PATH, buf, sizeof(buf));
-            sysfs_write(GPU_PATH, "153600000");
+            sysfs_write(GPU_PATH, SGX_POWERSAVE);
+            sysfs_write(BATTERY_FRIEND_PATH, FRIEND_ON);
             // reduces the refresh rate
             system("service call SurfaceFlinger 1016");
         } else {
             sysfs_write(CPU_MAX_FREQ_PATH, NORMAL_MAX_FREQ);
-            sysfs_write(GPU_PATH, last_gpu);
+            sysfs_write(GPU_PATH, SGX_NORMAL);
+                sysfs_write(BATTERY_FRIEND_PATH, FRIEND_OFF);
             // restores the refresh rate
             system("service call SurfaceFlinger 1017");
         }
