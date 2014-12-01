@@ -77,6 +77,7 @@ enum {
      * by SurfaceFlinger (just as if compositionType was set to HWC_OVERLAY).
      */
     HWC_SKIP_LAYER = 0x00000001,
+    HWC_SCREENSHOT_ANIMATOR_LAYER = 0x00000002,
     /*
      * HWC_IS_CURSOR_LAYER is set by surfaceflinger to indicate that this
      * layer is being used as a cursor on this particular display, and that
@@ -109,6 +110,7 @@ enum {
     /* this layer's contents are taken from a sideband buffer stream.
      * Added in HWC_DEVICE_API_VERSION_1_4. */
     HWC_SIDEBAND = 4,
+    HWC_BLIT = 4,
  
     /* this layer's composition will be handled by hwcomposer by dedicated
        cursor overlay hardware. hwcomposer will also all async position updates
@@ -195,7 +197,8 @@ enum {
 
 /* Allowed events for hwc_methods::eventControl() */
 enum {
-    HWC_EVENT_VSYNC     = 0
+     HWC_EVENT_VSYNC     = 0,
+     HWC_EVENT_ORIENTATION // To notify HWC about the device orientation
 };
 
 /* Display types and associated mask bits. */

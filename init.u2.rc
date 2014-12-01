@@ -59,14 +59,6 @@ on post-fs-data
 
     symlink /sys/egl/egl.cfg /system/lib/egl/egl.cfg
 
-    mkdir /data/misc/wifi 0775 wifi wifi
-    mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    mkdir /data/misc/wifi/softap 0771 wifi wifi
-    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
-    mkdir /data/misc/dhcp 0775 dhcp dhcp
-    chown dhcp dhcp /data/misc/dhcp
-    chmod 0666 /data/misc/wifi/wpa_supplicant.conf
-    chmod 0775 /data/misc/wifi
 # Create Directory for HDCP
     mkdir /persist/mhl 0770 radio radio
     chown system system /dev/hdcp
@@ -77,8 +69,6 @@ on post-fs-data
     chown root system /sys/devices/platform/tspdrv/nforce_timed
     chmod 0664 /sys/devices/omapdss/display0/gamma_tuning
     chmod 0777 /sys/devices/platform/tspdrv/nforce_timed
-    restorecon /sys/devices/omapdss/display0/gamma_tuning
-    restorecon /sys/devices/platform/tspdrv/nforce_timed
 
 # Create Directory for widevine
     mkdir /persist/widevine 0770 drm system
@@ -94,21 +84,21 @@ on post-fs-data
     chmod 0770 /data/audio
 # gps permissions
 # GPS GPIO Setting - refer gps_gpio.c(android\kernel\drivers\p760\misc)
-    chown system system /sys/devices/platform/gps_gpio/poweron
-	chmod 0660 /sys/devices/platform/gps_gpio/poweron
-    chown system system /sys/devices/platform/gps_gpio/reset
-	chmod 0660 /sys/devices/platform/gps_gpio/reset
+    chown root system /sys/devices/platform/gps_gpio/poweron
+	chmod 0777 /sys/devices/platform/gps_gpio/poweron
+    chown root system /sys/devices/platform/gps_gpio/reset
+	chmod 0777 /sys/devices/platform/gps_gpio/reset
 # GPS UART Setting
     chown system system /dev/ttyO2
-	chmod 0660 /dev/ttyO2
+	chmod 0777 /dev/ttyO2
 # GPS RIL port Setting
     chown system system /dev/pts17
-	chmod 0660 /dev/pts17
+	chmod 0777 /dev/pts17
 	chmod 777 /system/bin/glgps
 
     mkdir /data/gps
     chmod 777 /data/gps
-    chown system system /data/gps
+    chown gps system /data/gps
     mkdir /data/gps/log
     chmod 777 /data/gps/log
     chown system system /data/gps/log
@@ -256,7 +246,7 @@ on boot
     chown system radio /sys/class/leds/button-backlight/br_maintain_on
     chmod 0660 /sys/class/leds/button-backlight/br_maintain_on
     chown system radio /sys/class/leds/button-backlight/brightness
-    chmod 0777 /sys/devices/platform/keypad_led/leds/button-backlight/brightness
+    chmod 0777 /sys/class/leds/button-backlight/brightness
 
 # usb serial
     chmod 0777 /dev/ttyGS0
@@ -455,9 +445,10 @@ service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard0 /s
     class late_start
     disabled
 
-
-
-
+service charger /sbin/healthd -c
+    class charger
+    critical
+    seclabel u:r:healthd:s0
 
 ## Set the wifi mac address
 on property:dev.bootcomplete=1
@@ -468,10 +459,3 @@ on property:dev.bootcomplete=1
 chmod 755 /mnt/asec
 chmod 777 /data/gps
 chmod -R 777 /data/gps
-
-service charger /sbin/healthd
-    class charger
-    seclabel u:r:healthd:s0
-    user root
-    group root
-    oneshot

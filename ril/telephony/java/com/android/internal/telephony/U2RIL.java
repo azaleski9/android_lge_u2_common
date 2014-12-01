@@ -222,25 +222,28 @@ public class U2RIL extends RIL implements CommandsInterface {
                  * 7 - answered
                  */
                 switch (xcallState) {
-                case 7:
-                    mCallList.add(xcallID);
-                    if (mCallList.size() == 1) {
-                        WriteLgeCPATH(1);
-                        mCallPath = 1;
-                    }
-                    break;
-                case 6:
-                    if(mCallList.contains(xcallID)) {
-                        mCallList.remove(mCallList.indexOf(xcallID));
+                    case 2:
+                    case 4:
+                    case 7:
+                        if (!mCallList.contains(xcallID)) {
+                            mCallList.add(xcallID);
+                        }
+                        if (mCallList.size() != 0) {
+                            WriteLgeCPATH(1);
+                            mCallPath = 1;
+                        }
+                        break;
+                    case 6:
+                        if (mCallList.contains(xcallID)) {
+                            mCallList.remove(mCallList.indexOf(xcallID));
+                        }
                         if (mCallList.size() == 0) {
-                            if (mCallPath != 1) {
-                                WriteLgeCPATH(1);
-                            }
                             WriteLgeCPATH(0);
                             mCallPath = 0;
                         }
-                    }
-                    break;
+                        break;
+                    default:
+                        break;
                 }
 
                 if (RILJ_LOGD) riljLog("LGE XCALLSTAT > {" + xcallID + "," +  xcallState + "}");
@@ -270,6 +273,9 @@ public class U2RIL extends RIL implements CommandsInterface {
             case RIL_UNSOL_LGE_BATTERY_LEVEL_UPDATE:
             case RIL_UNSOL_LGE_SELECTED_SPEECH_CODEC:
                 if (RILJ_LOGD) riljLog("sinking LGE request > " + response);
+             break;
+            default:
+                break;
         }
 
     }

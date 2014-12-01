@@ -34,7 +34,6 @@ TARGET_KERNEL_SOURCE := kernel/lge/omap4-common
 # Recovery
 BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_RECOVERY_FSTAB = device/lge/u2-common/fstab.u2
-MALLOC_IMPL := dlmalloc
 RECOVERY_FSTAB_VERSION = 2
 BOARD_UMS_LUNFILE := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
 TARGET_OTA_ASSERT_DEVICE := p760,p765,p768,p769,u2
@@ -52,6 +51,7 @@ USE_OPENGL_RENDERER := true
 BOARD_USE_TI_DUCATI_H264_PROFILE := true
 TARGET_NEEDS_BIONIC_MD5 := true
 TARGET_ENABLE_NON_PIE_SUPPORT := true
+MALLOC_IMPL := dlmalloc
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
@@ -87,11 +87,15 @@ endif
 ifdef BOARD_USE_TI_ENHANCED_DOMX
     BOARD_USE_TI_DUCATI_H264_PROFILE := true
     TI_CUSTOM_DOMX_PATH := $(COMMON_FOLDER)/domx
+    BOARD_USE_TI_CUSTOM_DOMX := true
     DOMX_PATH := $(COMMON_FOLDER)/domx
+    TARGET_SPECIFIC_HEADER_PATH += $(COMMON_FOLDER)/domx/omx_core/inc
     ENHANCED_DOMX := true
 else
     DOMX_PATH := hardware/ti/omap4xxx/domx
 endif
+
+TARGET_TI_HWC_HDMI_DISABLED := true
 
 # HWComposer
 BOARD_USE_SYSFS_VSYNC_NOTIFICATION := true
@@ -108,6 +112,7 @@ BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/lge/u2-common/vibrator.c
 
 # Camera
 USE_CAMERA_STUB := false
+COMMON_GLOBAL_CFLAGS += -DQCOM_LEGACY_UIDS
 
 # External SGX Module
 SGX_MODULES:
@@ -128,14 +133,14 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 TARGET_PROVIDES_TI_FM_SERVICE := true
 
 # SELinux
-BOARD_SEPOLICY_DIRS +:= \
-    device/lge/u2-common/selinux
+#BOARD_SEPOLICY_DIRS +:= \
+#    device/lge/u2-common/selinux
 
-BOARD_SEPOLICY_UNION +:= \
-    file_contexts \
-    pvrsrvinit.te \
-    device.te \
-    domain.te
+#BOARD_SEPOLICY_UNION +:= \
+#    file_contexts \
+#    pvrsrvinit.te \
+#    device.te \
+#    domain.te
 
 FORCE_PERMISSIVE_TO_UNCONFINED:=false
 
