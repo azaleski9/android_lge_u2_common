@@ -102,7 +102,7 @@ BOARD_USE_SYSFS_VSYNC_NOTIFICATION := true
 
 # FS
 TARGET_USERIMAGES_USE_EXT4 := true
-# TARGET_USERIMAGES_USE_F2FS := true
+TARGET_USERIMAGES_USE_F2FS := true
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1033686220
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2469606195
 BOARD_FLASH_BLOCK_SIZE := 131072
@@ -133,14 +133,24 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 TARGET_PROVIDES_TI_FM_SERVICE := true
 
 # SELinux
-#BOARD_SEPOLICY_DIRS +:= \
-#    device/lge/u2-common/selinux
 
-#BOARD_SEPOLICY_UNION +:= \
-#    file_contexts \
-#    pvrsrvinit.te \
-#    device.te \
-#    domain.te
+BOARD_SEPOLICY_DIRS += \
+    device/lge/u2-common/selinux
+
+BOARD_SEPOLICY_UNION += \
+	file_contexts \
+        fRom.te \
+        init.te \
+        mediaserver.te \
+        pvrsrvinit.te \
+        rild.te \
+	bluetooth.te \
+	sdcardd.te \
+	servicemanager.te \
+	system_server.te \
+	zygote.te \
+	device.te \
+        domain.te
 
 FORCE_PERMISSIVE_TO_UNCONFINED:=false
 

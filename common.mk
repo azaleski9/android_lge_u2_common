@@ -60,7 +60,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
@@ -196,7 +195,10 @@ PRODUCT_PACKAGES += \
 	libion.so
 
 PRODUCT_COPY_FILES += \
-$(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim
+$(LOCAL_PATH)/fs/system/bin/fstrim:system/bin/fstrim \
+$(LOCAL_PATH)/fs/system/app/GPSFixer.apk:system/app/GPSFixer/GPSFixer.apk \
+$(LOCAL_PATH)/fs/system/app/L9UMSSwitcher.apk:system/app/L9UMSSwitcher/L9UMSSwitcher.apk \
+$(LOCAL_PATH)/fs/system/app/L9BM.apk:system/app/L9BM/L9BM.apk
 
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
@@ -219,7 +221,6 @@ TW_BRIGHTNESS_PATH := /sys/devices/platform/omap/omap_i2c.2/i2c-2/2-0036/brightn
 PRODUCT_PROPERTY_OVERRIDES += \
 rild.libpath=/system/lib/lge-ril.so \
 ro.telephony.ril_class=U2RIL \
-ro.telephony.ril.config=fakeiccid \
 camera2.portability.force_api=1 \
 wifi.interface=wlan0 \
 ro.bq.gpu_to_cpu_unsupported=1 \
